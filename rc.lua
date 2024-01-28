@@ -18,11 +18,21 @@ local myplayerwidget = require('pollux.widgets.playerctl').setup({
   format = '{{ artist }} - {{ title }}'
 })
 
+local modalawesome = require('plugins.modalawesome')
+
 HOME_DIR = os.getenv('HOME') .. '/'
 AWESOME_DIR = HOME_DIR .. '.config/awesome/'
 THEMES_DIR = AWESOME_DIR .. 'themes/'
 
 beautiful.init(THEMES_DIR .. 'custom/theme.lua')
+
+modalawesome.init{
+  modkey       = "Mod4",
+  default_mode = "tag",
+  modes        = require("pollux.modes"),
+  stop_name    = "client",
+  keybindings  = {}
+}
 
 awful.spawn.with_shell('~/.config/awesome/autostart.sh')
 
