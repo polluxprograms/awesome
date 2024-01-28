@@ -206,27 +206,6 @@ local tag_commands = {
     end
   },
   {
-    description = "minimize",
-    pattern = {'n'},
-    handler = function()
-      local c = client.focus
-      if c then
-        c.minimized = true
-      end
-    end
-  },
-  {
-    description = "restore minimized",
-    pattern = {'u'},
-    handler = function()
-        local c = awful.client.restore()
-        if c then
-            client.focus = c
-            c:raise()
-        end
-    end,
-  },
-  {
     description = "go back in tag history",
     pattern = {'z', 't'},
     handler = function()

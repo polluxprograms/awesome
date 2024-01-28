@@ -19,18 +19,6 @@ local launcher_commands = {
     handler = function() awesome.quit() end
   },
   {
-    description = "lua execute prompt",
-    pattern = {'x'},
-    handler = function()
-      awful.prompt.run {
-        prompt       = "Run Lua code: ",
-        textbox      = awful.screen.focused().mypromptbox.widget.widget,
-        exe_callback = awful.util.eval,
-        history_path = awful.util.get_cache_dir() .. "/history_eval"
-      }
-    end,
-  },
-  {
     description = "open a terminal",
     pattern = {'t'},
     handler = function() awful.spawn('/home/pollux/.scripts/open-term') end
