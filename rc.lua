@@ -10,9 +10,6 @@ local awful = require('awful')
 local wibox = require('wibox')
 local beautiful = require('beautiful')
 
-local menubar = require('menubar')
-local hotkeys_popup = require('awful.hotkeys_popup')
-
 local mypomowidget = require('pollux.widgets.pomo')
 local myplayerwidget = require('pollux.widgets.playerctl').setup({
   format = '{{ artist }} - {{ title }}'
