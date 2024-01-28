@@ -1,0 +1,3 @@
+[submodule "plugins/modalawesome"]
+	path = plugins/modalawesome
+	url = https://github.com/potamides/modalawesome.git
