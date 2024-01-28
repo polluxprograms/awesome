@@ -15,14 +15,13 @@ local myplayerwidget = require('pollux.widgets.playerctl').setup({
   format = '{{ artist }} - {{ title }}'
 })
 
-local modalawesome = require('plugins.modalawesome')
-
 HOME_DIR = os.getenv('HOME') .. '/'
 AWESOME_DIR = HOME_DIR .. '.config/awesome/'
 THEMES_DIR = AWESOME_DIR .. 'themes/'
 
 beautiful.init(THEMES_DIR .. 'custom/theme.lua')
 
+local modalawesome = require('plugins.modalawesome')
 modalawesome.init{
   modkey       = "Mod4",
   default_mode = "tag",
@@ -30,6 +29,7 @@ modalawesome.init{
   stop_name    = "client",
   keybindings  = {}
 }
+local mymodewidget = modalawesome.active_mode
 
 awful.spawn.with_shell('~/.config/awesome/autostart.sh')
 
@@ -91,6 +91,7 @@ awful.screen.connect_for_each_screen(function(s)
       layout = wibox.layout.fixed.horizontal,
       mytextclock,
       s.mytaglist,
+      mymodewidget,
       s.mypromptbox,
     },
     nil, -- Middle widget
