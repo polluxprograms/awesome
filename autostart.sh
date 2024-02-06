@@ -19,6 +19,7 @@ xset s 300
 run playerctld daemon
 run gammastep
 run mpd
+run mpDris2
 
 run keepassxc
 run pomo.sh notify
