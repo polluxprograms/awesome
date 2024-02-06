@@ -18,6 +18,7 @@ xset s 300
 # Misc Daemons
 run playerctld daemon
 run gammastep
+run mpd
 
 run keepassxc
 run pomo.sh notify
