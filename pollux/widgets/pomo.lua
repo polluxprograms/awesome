@@ -1,10 +1,22 @@
 local awful = require('awful')
 local wibox = require('wibox')
 local timer = require('gears.timer')
+local gtable = require('gears.table')
 
 local pomo_widget = wibox.widget({
   widget = wibox.widget.textbox
 })
+
+pomo_widget:buttons(
+  gtable.join(
+    awful.button({}, 1, function ()
+      awful.spawn.with_shell('pomo.sh start')
+    end),
+    awful.button({}, 3, function ()
+      awful.spawn.with_shell('pomo.sh stop')
+    end)
+  )
+)
 
 timer({
   timeout = 1,
