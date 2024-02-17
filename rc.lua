@@ -10,8 +10,7 @@ local awful = require('awful')
 local wibox = require('wibox')
 local beautiful = require('beautiful')
 
-local tags = require('pollux.tags')
-local persistence = require('pollux.persistence')
+local awetags = require('pollux.awetags')
 
 local mypomowidget = require('pollux.widgets.pomo')
 local myplayerwidget = require('pollux.widgets.playerctl').setup({
@@ -139,8 +138,9 @@ awful.screen.connect_for_each_screen(function(s)
 
 end)
 
-if not persistence.restore() then
-  tags.create_tag('default', screen.primary).selected = true
+if not awetags.restore() then
+  local default_tag = awetags.create_tag('default', screen.primary)
+  default_tag.selected = true
 end
 
 awful.rules.rules = {

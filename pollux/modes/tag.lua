@@ -2,7 +2,7 @@ local awful = require("awful")
 local grect = require("gears.geometry").rectangle
 local gfind = require("gears.table").find_keys
 
-local tagful = require('pollux.tags')
+local awetags = require('pollux.awetags')
 local selector = require('pollux.selector')
 
 -- helper function used by some bindings which manipulate tags
@@ -92,17 +92,17 @@ local tag_commands = {
 
       local names = {}
       local n = 1
-      for k, _ in pairs(tagful.tags) do
+      for k, _ in pairs(awetags.tags) do
         names[n] = k
         n = n + 1
       end
 
       selector.query('<-', names, function (selection)
-        local tag = tagful.tags[selection]
+        local tag = awetags.tags[selection]
         if tag then
-          tagful.show_tag(tag, awful.screen.focused())
+          awetags.show_tag(tag, awful.screen.focused())
         else
-          tagful.create_tag(selection, awful.screen.focused())
+          awetags.create_tag(selection, awful.screen.focused())
         end
       end)
     end
@@ -112,7 +112,7 @@ local tag_commands = {
     pattern = {'c'},
     handler = function ()
       selector.query('New name:', {}, function (selection)
-        tagful.rename_tag(awful.screen.focused().selected_tag, selection)
+        awetags.rename_tag(awful.screen.focused().selected_tag, selection)
       end)
     end
   },
@@ -120,7 +120,7 @@ local tag_commands = {
     description = 'delete tag',
     pattern = {'d', 'd'},
     handler = function (...)
-      tagful.close_tag(awful.screen.focused().selected_tag)
+      awetags.close_tag(awful.screen.focused().selected_tag)
     end
   },
   {
