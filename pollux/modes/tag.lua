@@ -3,7 +3,7 @@ local grect = require("gears.geometry").rectangle
 local gfind = require("gears.table").find_keys
 
 local awetags = require('pollux.awetags')
-local selector = require('pollux.selector')
+local selector = require('pollux.widgets.selector')
 
 -- helper function used by some bindings which manipulate tags
 local function find_tag(func)
