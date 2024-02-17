@@ -16,7 +16,7 @@ local mypomowidget = require('pollux.widgets.pomo')
 local myplayerwidget = require('pollux.widgets.playerctl').setup({
   format = '{{ artist }} - {{ title }}'
 })
-local selector = require('pollux.selector')
+local myselector = require('pollux.widgets.selector')
 
 HOME_DIR = os.getenv('HOME') .. '/'
 AWESOME_DIR = HOME_DIR .. '.config/awesome/'
@@ -113,7 +113,7 @@ awful.screen.connect_for_each_screen(function(s)
       mytextclock,
       mymodewidget,
       s.mytag,
-      selector,
+      myselector,
       layout = wibox.layout.fixed.horizontal,
       spacing = 8
     })
