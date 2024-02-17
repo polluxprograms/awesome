@@ -2,6 +2,9 @@ local awful = require("awful")
 local grect = require("gears.geometry").rectangle
 local gfind = require("gears.table").find_keys
 
+local tagful = require('pollux.tags')
+local selector = require('pollux.selector')
+
 -- helper function used by some bindings which manipulate tags
 local function find_tag(func)
   return function(_, ...)
@@ -83,39 +86,42 @@ local tag_commands = {
     end
   },
   {
-    description = "jump to urgent client",
-    pattern = {'x'},
-    handler = function() awful.client.urgent.jumpto() end
-  },
-  {
-    description = "focus tag by direction or globally",
-    pattern = {'%d*', '[gfb]'},
-    handler = find_tag(awful.tag.object.view_only)
-  },
-  {
-    description = "toggle tag",
-    pattern = {'t', '%d*', '[gfb]'},
-    handler = find_tag(awful.tag.viewtoggle)
-  },
-  {
-    description = "move focused client to tag",
-    pattern = {'m', '%d*', '[gfb]'},
-    handler = find_tag(function(tag)
-      local c = client.focus
-      if c then
-        c:move_to_tag(tag)
+    description = 'switch tag',
+    pattern = {'n'},
+    handler = function ()
+
+      local names = {}
+      local n = 1
+      for k, _ in pairs(tagful.tags) do
+        names[n] = k
+        n = n + 1
       end
-    end)
+
+      selector.query('<-', names, function (selection)
+        local tag = tagful.tags[selection]
+        if tag then
+          tagful.show_tag(tag, awful.screen.focused())
+        else
+          tagful.create_tag(selection, awful.screen.focused())
+        end
+      end)
+    end
   },
   {
-    description = "toggle focused client on tag",
-    pattern = {'c', '%d*', '[gfb]'},
-    handler = find_tag(function(tag)
-      local c = client.focus
-      if c then
-        c:toggle_tag(tag)
-      end
-    end)
+    description = 'rename tag',
+    pattern = {'c'},
+    handler = function ()
+      selector.query('New name:', {}, function (selection)
+        tagful.rename_tag(awful.screen.focused().selected_tag, selection)
+      end)
+    end
+  },
+  {
+    description = 'delete tag',
+    pattern = {'d', 'd'},
+    handler = function (...)
+      tagful.close_tag(awful.screen.focused().selected_tag)
+    end
   },
   {
     description = "move to master",
@@ -124,22 +130,6 @@ local tag_commands = {
       local c, m = client.focus, awful.client.getmaster()
       if c and m then
         c:swap(m)
-      end
-    end
-  },
-  {
-    description = "move to next/previous screen",
-    pattern = {'m', '%d*', '[ey]'},
-    handler = function(_, _, count, movement)
-      local c = client.focus
-      count = count == '' and 1 or tonumber(count)
-
-      if c then
-        if movement == 'e' then
-          c:move_to_screen(c.screen.index + count)
-        else
-          c:move_to_screen(c.screen.index - count)
-        end
       end
     end
   },
@@ -202,23 +192,6 @@ local tag_commands = {
       if c then
         c.maximized = not c.maximized
         c:raise()
-      end
-    end
-  },
-  {
-    description = "go back in tag history",
-    pattern = {'z', 't'},
-    handler = function()
-      awful.tag.history.restore()
-    end
-  },
-  {
-    description = "go back in client history",
-    pattern = {'z', 'c'},
-    handler = function()
-      awful.client.focus.history.previous()
-      if client.focus then
-          client.focus:raise()
       end
     end
   },

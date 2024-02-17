@@ -17,7 +17,7 @@ xset s 300
 
 # Misc Daemons
 run playerctld daemon
-run gammastep
+# run gammastep
 run mpd
 run mpDris2
 

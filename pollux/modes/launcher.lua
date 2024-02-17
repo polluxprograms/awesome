@@ -11,7 +11,10 @@ local launcher_commands = {
   {
     description = "reload awesome",
     pattern = {'r'},
-    handler = function() awesome.restart() end
+    handler = function() 
+      require('pollux.persistence').save()
+      awesome.restart()
+    end
   },
   {
     description = "quit awesome",

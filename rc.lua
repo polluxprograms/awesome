@@ -10,10 +10,14 @@ local awful = require('awful')
 local wibox = require('wibox')
 local beautiful = require('beautiful')
 
+local tags = require('pollux.tags')
+local persistence = require('pollux.persistence')
+
 local mypomowidget = require('pollux.widgets.pomo')
 local myplayerwidget = require('pollux.widgets.playerctl').setup({
   format = '{{ artist }} - {{ title }}'
 })
+local selector = require('pollux.selector')
 
 HOME_DIR = os.getenv('HOME') .. '/'
 AWESOME_DIR = HOME_DIR .. '.config/awesome/'
@@ -21,7 +25,7 @@ THEMES_DIR = AWESOME_DIR .. 'themes/'
 
 beautiful.init(THEMES_DIR .. 'custom/theme.lua')
 
-local modalawesome = require('plugins.modalawesome')
+local modalawesome = require('lib.modalawesome')
 modalawesome.init{
   modkey       = "Mod4",
   default_mode = "tag",
@@ -67,9 +71,20 @@ screen.connect_signal('property::geometry', set_wallpaper)
 awful.screen.connect_for_each_screen(function(s)
   set_wallpaper(s)
 
-  awful.tag({ '1', '2', '3', '4', '5', '6', '7', '8', '9' }, s, awful.layout.layouts[1])
-
   s.mypromptbox = awful.widget.prompt()
+
+  s.mytag = wibox.widget({
+    text = '',
+    widget = wibox.widget.textbox
+  })
+
+  s:connect_signal('tag::changed', function ()
+    if s.selected_tag then
+      s.mytag.text = s.selected_tag.name
+    else
+      s.mytag.text = 'none'
+    end
+  end)
 
   s.mylayoutbox = awful.widget.layoutbox(s)
   s.mylayoutbox:buttons(gears.table.join(
@@ -77,33 +92,56 @@ awful.screen.connect_for_each_screen(function(s)
     awful.button({ }, 3, function () awful.layout.inc(-1) end)
   ))
 
-  s.mytaglist = awful.widget.taglist {
-    screen  = s,
-    filter  = awful.widget.taglist.filter.all,
-    buttons = taglist_buttons
-  }
+  -- Hidden wibar
+  s.wibar = awful.wibar({
+    position = 'top',
+    screen = s,
+    width = 16,
+    height = 16,
+    widget = wibox.widget({})
+  })
+  s.wibar.x = s.geometry.x
 
-  s.mywibox = awful.wibar({ position = 'top', screen = s })
-
-  s.mywibox:setup {
-    layout = wibox.layout.align.horizontal,
-    { -- Left widgets
-      layout = wibox.layout.fixed.horizontal,
+  s.wibox_left = awful.popup({
+    screen = s,
+    placement = awful.placement.top_left,
+    minimum_height = 16,
+    maximum_height = 16,
+    shape = function (cr, width, height)
+      return gears.shape.partially_rounded_rect(cr, width, height, false, false, true, false, 8)
+    end,
+    widget = wibox.widget({
       mytextclock,
-      s.mytaglist,
       mymodewidget,
-      s.mypromptbox,
-    },
-    nil, -- Middle widget
-    { -- Right widgets
+      s.mytag,
+      selector,
       layout = wibox.layout.fixed.horizontal,
+      spacing = 8
+    })
+  })
+
+  s.wibox_right = awful.popup({
+    screen = s,
+    placement = awful.placement.top_right,
+    minimum_height = 16,
+    maximum_height = 16,
+    shape = function (cr, width, height)
+      return gears.shape.partially_rounded_rect(cr, width, height, false, false, false, true, 8)
+    end,
+     widget = wibox.widget({
       mypomowidget,
       myplayerwidget,
-      wibox.widget.systray(),
       s.mylayoutbox,
-    },
-  }
+      layout = wibox.layout.fixed.horizontal,
+      spacing = 8
+    })
+  })
+
 end)
+
+if not persistence.restore() then
+  tags.create_tag('default', screen.primary).selected = true
+end
 
 awful.rules.rules = {
   {
