@@ -25,7 +25,7 @@ THEMES_DIR = AWESOME_DIR .. 'themes/'
 
 beautiful.init(THEMES_DIR .. 'custom/theme.lua')
 
-local modalawesome = require('lib.modalawesome')
+local modalawesome = require('modalawesome')
 modalawesome.init{
   modkey       = "Mod4",
   default_mode = "tag",

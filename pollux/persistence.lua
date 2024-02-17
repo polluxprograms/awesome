@@ -1,4 +1,4 @@
-require('lib.table-serialization')
+require('table-serialization')
 
 local awful = require('awful')
 local tags = require('pollux.tags')
