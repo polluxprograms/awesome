@@ -6,7 +6,7 @@ local selector = wibox.widget({
 })
 
 local get_match = function (options, input)
-  for _, v in pairs(options) do
+  for _, v in ipairs(options) do
     if string.find(v, input) then
       return v
     end
@@ -22,6 +22,12 @@ end
 
 selector.query = function(prompt, options, callback)
   selector.text = prompt
+
+  -- Sort options to prevent ones that can't be selected
+  -- Shorter options always come first
+  table.sort(options, function (a, b)
+    return #a < #b
+  end)
 
   local input = ''
 
