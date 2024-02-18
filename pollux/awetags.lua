@@ -5,6 +5,10 @@ local state_file = awful.util.get_cache_dir() .. '/state'
 local awetags = { tags = {} }
 
 awetags.close_tag = function (tag)
+  -- Close all clients to prevent orphans
+  for _, c in pairs(tag:clients()) do
+    c:kill()
+  end
   awetags.tags[tag.name] = nil
   local screen = tag.screen
   tag:delete()
