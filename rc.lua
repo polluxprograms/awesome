@@ -1,28 +1,18 @@
 pcall(require, 'luarocks.loader')
 
-require('awful.autofocus')
-
-require('pollux.errors')
-require('pollux.notifications')
-
 local gears = require('gears')
 local awful = require('awful')
 local wibox = require('wibox')
 local beautiful = require('beautiful')
 
-local awetags = require('pollux.awetags')
-
-local mypomowidget = require('pollux.widgets.pomo')
-local myplayerwidget = require('pollux.widgets.playerctl').setup({
-  format = '{{ artist }} - {{ title }}'
-})
-local myselector = require('pollux.widgets.selector')
-
 HOME_DIR = os.getenv('HOME') .. '/'
 AWESOME_DIR = HOME_DIR .. '.config/awesome/'
 THEMES_DIR = AWESOME_DIR .. 'themes/'
-
 beautiful.init(THEMES_DIR .. 'custom/theme.lua')
+
+require('pollux.errors')
+require('pollux.notifications')
+require('pollux.focus')
 
 local modalawesome = require('modalawesome')
 modalawesome.init{
@@ -32,6 +22,14 @@ modalawesome.init{
   stop_name    = "client",
   keybindings  = {}
 }
+
+local awetags = require('pollux.awetags')
+
+local mypomowidget = require('pollux.widgets.pomo')
+local myplayerwidget = require('pollux.widgets.playerctl').setup({
+  format = '{{ artist }} - {{ title }}'
+})
+local myselector = require('pollux.widgets.selector')
 local mymodewidget = modalawesome.active_mode
 
 awful.spawn.with_shell('~/.config/awesome/autostart.sh')
@@ -170,13 +168,7 @@ client.connect_signal('manage', function (c)
   if awesome.startup
     and not c.size_hints.user_position
     and not c.size_hints.program_position then
-      awful.placement.no_offscreen(c)
+     -- awful.placement.no_offscreen(c)
   end
 end)
 
-client.connect_signal('mouse::enter', function(c)
-  c:emit_signal('request::activate', 'mouse_enter', {raise = false})
-end)
-
-client.connect_signal('focus', function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal('unfocus', function(c) c.border_color = beautiful.border_normal end)
