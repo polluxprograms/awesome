@@ -23,6 +23,9 @@ awetags.create_tag = function (name, screen)
   })
   awetags.tags[name] = tag
   tag:view_only()
+  tag:connect_signal('request::screen', function ()
+    tag.screen = awful.screen.primary
+  end)
   screen:emit_signal('tag::changed')
   return tag
 end
