@@ -6,21 +6,22 @@ run() {
   fi
 }
 
+# Graphics Daemons
+run picom --backend glx --vsync
 
-# Lock stuff
+# Lock
 run xss-lock -- betterlockscreen -l
 betterlockscreen -u $HOME/Wallpapers &
 xset s on
 xset s 300
 
-# Misc Daemons
+# Audio/Music Daemons
 run gentoo-pipewire-launcher
 run playerctld daemon
-# run gammastep
 run mpd
 run mpDris2
 
+# Background Programs
 run keepassxc
 run pomo.sh notify
-
 run syncthing
