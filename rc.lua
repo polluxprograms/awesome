@@ -104,16 +104,21 @@ awful.screen.connect_for_each_screen(function(s)
     placement = awful.placement.top_left,
     minimum_height = 16,
     maximum_height = 16,
-    shape = function (cr, width, height)
-      return gears.shape.partially_rounded_rect(cr, width, height, false, false, true, false, 8)
-    end,
+    bg = '#0000',
     widget = wibox.widget({
-      mytextclock,
-      mymodewidget,
-      s.mytag,
-      myselector,
-      layout = wibox.layout.fixed.horizontal,
-      spacing = 8
+      {
+        mytextclock,
+        mymodewidget,
+        s.mytag,
+        myselector,
+        layout = wibox.layout.fixed.horizontal,
+        spacing = 8
+      },
+      shape = function (cr, width, height)
+        return gears.shape.partially_rounded_rect(cr, width, height, false, false, true, false, 8)
+      end,
+      widget = wibox.container.background(),
+      bg = beautiful.bg_normal
     })
   })
 
@@ -122,15 +127,20 @@ awful.screen.connect_for_each_screen(function(s)
     placement = awful.placement.top_right,
     minimum_height = 16,
     maximum_height = 16,
-    shape = function (cr, width, height)
-      return gears.shape.partially_rounded_rect(cr, width, height, false, false, false, true, 8)
-    end,
-     widget = wibox.widget({
-      mypomowidget,
-      myplayerwidget,
-      s.mylayoutbox,
-      layout = wibox.layout.fixed.horizontal,
-      spacing = 8
+    bg = '#0000',
+    widget = wibox.widget({
+      {
+        mypomowidget,
+        myplayerwidget,
+        s.mylayoutbox,
+        layout = wibox.layout.fixed.horizontal,
+        spacing = 8
+      },
+      shape = function (cr, width, height)
+        return gears.shape.partially_rounded_rect(cr, width, height, false, false, false, true, 8)
+      end,
+      widget = wibox.container.background(),
+      bg = beautiful.bg_normal
     })
   })
 
