@@ -65,7 +65,6 @@ local function new(args)
     end
   })
 
-  require('naughty').notify({ text = tostring(args.hour_length) })
   gears.table.crush(ret._private, args)
 
   return ret
