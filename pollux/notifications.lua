@@ -4,7 +4,7 @@ local awful = require('awful')
 naughty.config.notify_callback = function(args)
 
   -- Play default notification sound
-  awful.spawn({'paplay', '/usr/share/sounds/freedesktop/stereo/message.oga'})
+  -- awful.spawn({'paplay', '/usr/share/sounds/freedesktop/stereo/message.oga'})
 
   -- TODO: 
   -- Notification toggle
