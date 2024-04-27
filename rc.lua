@@ -13,6 +13,7 @@ beautiful.init(THEMES_DIR .. 'custom/theme.lua')
 require('pollux.errors')
 require('pollux.notifications')
 require('pollux.focus')
+require('pollux.floating')
 
 local modalawesome = require('modalawesome')
 modalawesome.init{
@@ -171,8 +172,6 @@ awful.rules.rules = {
       border_color = beautiful.border_normal,
       focus = awful.client.focus.filter,
       raise = true,
-      keys = clientkeys,
-      buttons = clientbuttons,
       screen = awful.screen.preferred,
       placement = awful.placement.no_overlap+awful.placement.no_offscreen
     }
@@ -185,12 +184,4 @@ awful.rules.rules = {
     properties = { floating = true }
   },
 }
-
-client.connect_signal('manage', function (c)
-  if awesome.startup
-    and not c.size_hints.user_position
-    and not c.size_hints.program_position then
-     -- awful.placement.no_offscreen(c)
-  end
-end)
 
