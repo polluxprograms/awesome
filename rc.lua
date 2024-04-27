@@ -175,13 +175,6 @@ awful.rules.rules = {
       screen = awful.screen.preferred,
       placement = awful.placement.no_overlap+awful.placement.no_offscreen
     }
-  },
-  {
-    rule_any = {
-      instance = { 'pinentry' },
-      name = { 'Event Tester' }
-    },
-    properties = { floating = true }
-  },
+  }
 }
 
