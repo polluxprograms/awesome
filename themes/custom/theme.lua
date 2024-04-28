@@ -3,8 +3,6 @@
 ---------------------------
 
 local theme_assets = require("beautiful.theme_assets")
-local xresources = require("beautiful.xresources")
-local dpi = xresources.apply_dpi
 
 local themes_path = os.getenv('HOME') .. '/.config/awesome/themes/custom/'
 
@@ -25,6 +23,7 @@ theme.fg_minimize   = "#ffffff"
 
 theme.useless_gap   = 8
 theme.border_width  = 2
+theme.bar_height    = 16
 
 theme.border_unfocus  = "#000000"
 theme.border_focus = {
