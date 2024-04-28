@@ -164,17 +164,12 @@ if not awetags.restore() then
   default_tag.selected = true
 end
 
-awful.rules.rules = {
-  {
-    rule = { },
-    properties = {
-      border_width = beautiful.border_width,
-      border_color = beautiful.border_normal,
-      focus = awful.client.focus.filter,
-      raise = true,
-      screen = awful.screen.preferred,
-      placement = awful.placement.no_overlap+awful.placement.no_offscreen
-    }
-  }
-}
+awful.rules.add_rule_source('default', function(_, properties)
+  properties.border_width = beautiful.border_width
+  properties.border_color = beautiful.border_normal
+  properties.focus = awful.client.focus.filter
+  properties.raise = true
+  properties.screen = awful.screen.preferred
+  properties.placement = awful.placement.no_overlap+awful.placement.no_offscreen
+end)
 
