@@ -27,9 +27,7 @@ modalawesome.init{
 local awetags = require('pollux.awetags')
 
 local mypomowidget = require('pollux.widgets.pomo')
-local myplayerwidget = require('pollux.widgets.playerctl').setup({
-  format = '{{ artist }} - {{ title }}'
-})
+local myplayerwidget = require('pollux.widgets.playerctl')
 local myselector = require('pollux.widgets.selector')
 local mymodewidget = modalawesome.active_mode
 local clock = require('pollux.widgets.clock')
