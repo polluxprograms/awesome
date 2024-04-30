@@ -27,6 +27,11 @@ local launcher_commands = {
     handler = function() awful.spawn('/home/pollux/.config/awesome/open_terminal.sh') end
   },
   {
+    description = "open a browser",
+    pattern = {'b'},
+    handler = function() awful.spawn('librewolf') end
+  },
+  {
     description = "show the menubar",
     pattern = {'m'},
     handler = function() menubar.show() end
