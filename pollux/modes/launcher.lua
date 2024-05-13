@@ -37,6 +37,15 @@ local launcher_commands = {
     handler = function() menubar.show() end
   },
   {
+    description = 'lock the session',
+    pattern = {'l'},
+    handler = function(mode)
+      -- The key grabber stops the lock, so kill the grabber.
+      mode.stop()
+      awful.spawn.with_shell('loginctl lock-session')
+    end
+  },
+  {
     description = 'enter client mode',
     pattern = {'i'},
     handler = function(mode) mode.stop() end

@@ -10,7 +10,7 @@ run() {
 run picom --backend glx --vsync --corner-radius 16 --rounded-corners-exclude 'class_g = "awesome"'
 
 # Lock
-run xss-lock -- betterlockscreen -l
+run xss-lock -- betterlockscreen -l -- -n
 betterlockscreen -u $HOME/Wallpapers &
 xset s on
 xset s 300
