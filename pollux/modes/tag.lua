@@ -1,6 +1,6 @@
-local awful = require("awful")
-local grect = require("gears.geometry").rectangle
-local gfind = require("gears.table").find_keys
+local awful = require('awful')
+local grect = require('gears.geometry').rectangle
+local gfind = require('gears.table').find_keys
 
 local awetags = require('pollux.awetags')
 local selector = require('pollux.widgets.selector')
@@ -29,7 +29,7 @@ end
 
 local tag_commands = {
   {
-    description = "focus client by direction",
+    description = 'focus client by direction',
     pattern = {'%d*', '[hjkl]'},
     handler = function(_, count, movement)
       local directions = {h = 'left', j = 'down', k = 'up', l = 'right'}
@@ -41,7 +41,7 @@ local tag_commands = {
     end
   },
   {
-    description = "focus next/previous screen",
+    description = 'focus next/previous screen',
     pattern = {'%d*', '[ey]'},
     handler = function(_, count, movement)
       count = count == '' and 1 or tonumber(count)
@@ -54,7 +54,7 @@ local tag_commands = {
     end
   },
   {
-    description = "swap client by direction",
+    description = 'swap client by direction',
     pattern = {'m', '%d*', '[hjkl]'},
     handler = function(_, _, count, movement)
       local directions = {h = 'left', j = 'down', k = 'up', l = 'right'}
@@ -124,7 +124,7 @@ local tag_commands = {
     end
   },
   {
-    description = "move to master",
+    description = 'move to master',
     pattern = {'m', 'm'},
     handler = function()
       local c, m = client.focus, awful.client.getmaster()
@@ -134,7 +134,7 @@ local tag_commands = {
     end
   },
   {
-    description = "close client",
+    description = 'close client',
     pattern = {'q'},
     handler = function()
       local c = client.focus
@@ -144,7 +144,7 @@ local tag_commands = {
     end
   },
   {
-    description = "toggle floating",
+    description = 'toggle floating',
     pattern = {'p', 'h'},
     handler = function()
       local c = client.focus
@@ -154,7 +154,7 @@ local tag_commands = {
     end
   },
   {
-    description = "toggle keep on top",
+    description = 'toggle keep on top',
     pattern = {'p', 'o'},
     handler = function()
       local c = client.focus
@@ -164,7 +164,7 @@ local tag_commands = {
     end
   },
   {
-    description = "toggle sticky",
+    description = 'toggle sticky',
     pattern = {'p', 's'},
     handler = function()
       local c = client.focus
@@ -174,7 +174,7 @@ local tag_commands = {
     end
   },
   {
-    description = "toggle fullscreen",
+    description = 'toggle fullscreen',
     pattern = {'p', 'f'},
     handler = function()
       local c = client.focus
@@ -185,7 +185,7 @@ local tag_commands = {
     end
   },
   {
-    description = "toggle maximized",
+    description = 'toggle maximized',
     pattern = {'p', 'm'},
     handler = function()
       local c = client.focus
@@ -196,19 +196,19 @@ local tag_commands = {
     end
   },
   {
-    description = "enter client mode",
+    description = 'enter client mode',
     pattern = {'i'},
     handler = function(mode) mode.stop() end
   },
   {
-    description = "enter launcher mode",
+    description = 'enter launcher mode',
     pattern = {'r'},
-    handler = function(mode) mode.start("launcher") end
+    handler = function(mode) mode.start('launcher') end
   },
   {
-    description = "enter layout mode",
+    description = 'enter layout mode',
     pattern = {'v'},
-    handler = function(mode) mode.start("layout") end
+    handler = function(mode) mode.start('layout') end
   },
 }
 

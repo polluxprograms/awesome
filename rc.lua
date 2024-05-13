@@ -20,10 +20,10 @@ require('pollux.floating')
 
 local modalawesome = require('modalawesome')
 modalawesome.init{
-  modkey       = "Mod4",
-  default_mode = "tag",
-  modes        = require("pollux.modes"),
-  stop_name    = "client",
+  modkey       = 'Mod4',
+  default_mode = 'tag',
+  modes        = require('pollux.modes'),
+  stop_name    = 'client',
   keybindings  = {}
 }
 
