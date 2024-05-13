@@ -104,7 +104,7 @@ awetags.restore = function ()
       c:tags({awetags.tags[state.client_data[c.window].tag]})
     end
   end)
-;
+
   return true
 end
 
