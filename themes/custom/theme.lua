@@ -8,7 +8,7 @@ local themes_path = os.getenv('HOME') .. '/.config/awesome/themes/custom/'
 
 local theme = {}
 
-theme.font          = "Monofur Nerd Font 8"
+theme.font          = "Monofur Nerd Font 14"
 
 theme.bg_normal     = "#222222"
 theme.bg_focus      = "#535d6c"
@@ -23,7 +23,7 @@ theme.fg_minimize   = "#ffffff"
 
 theme.useless_gap   = 8
 theme.border_width  = 2
-theme.bar_height    = 16
+theme.bar_height    = 32
 
 theme.border_unfocus  = "#000000"
 theme.border_focus = {

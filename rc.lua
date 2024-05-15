@@ -4,9 +4,6 @@ local gears = require('gears')
 local awful = require('awful')
 local wibox = require('wibox')
 local beautiful = require('beautiful')
-local dpi = beautiful.xresources.apply_dpi
-
-awful.screen.set_auto_dpi_enabled(true)
 
 HOME_DIR = os.getenv('HOME') .. '/'
 AWESOME_DIR = HOME_DIR .. '.config/awesome/'
@@ -72,15 +69,14 @@ screen.connect_signal('property::geometry', set_wallpaper)
 awful.screen.connect_for_each_screen(function(s)
   set_wallpaper(s)
 
-  local pix = dpi(1, s)
   s.myclock = clock({
-    hour_length = 3*pix,
-    hour_width = 1*pix,
-    minute_length = 6*pix,
-    minute_width = 1*pix,
-    second_length = 6*pix,
-    second_width = 0.5*pix,
-    forced_width = 16*pix
+    hour_length = 6,
+    hour_width = 2,
+    minute_length = 12,
+    minute_width = 2,
+    second_length = 12,
+    second_width = 1,
+    forced_width = 32
   })
 
   s.mypromptbox = awful.widget.prompt()
@@ -109,8 +105,8 @@ awful.screen.connect_for_each_screen(function(s)
   s.wibar = awful.wibar({
     position = 'top',
     screen = s,
-    width = dpi(beautiful.bar_height, s),
-    height = dpi(beautiful.bar_height, s),
+    width = beautiful.bar_height,
+    height = beautiful.bar_height,
     widget = wibox.widget({})
   })
   s.wibar.x = s.geometry.x
@@ -118,8 +114,8 @@ awful.screen.connect_for_each_screen(function(s)
   s.wibox_left = awful.popup({
     screen = s,
     placement = awful.placement.top_left,
-    minimum_height = dpi(beautiful.bar_height, s),
-    maximum_height = dpi(beautiful.bar_height, s),
+    minimum_height = beautiful.bar_height,
+    maximum_height = beautiful.bar_height,
     bg = '#0000',
     widget = wibox.widget({
       {
@@ -141,8 +137,8 @@ awful.screen.connect_for_each_screen(function(s)
   s.wibox_right = awful.popup({
     screen = s,
     placement = awful.placement.top_right,
-    minimum_height = dpi(beautiful.bar_height, s),
-    maximum_height = dpi(beautiful.bar_height, s),
+    minimum_height = beautiful.bar_height,
+    maximum_height = beautiful.bar_height,
     bg = '#0000',
     widget = wibox.widget({
       {
