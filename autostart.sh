@@ -7,7 +7,7 @@ run() {
 }
 
 # Graphics Daemons
-run picom --backend glx --vsync --corner-radius 16 --rounded-corners-exclude 'class_g = "awesome"'
+run picom --config $HOME/.config/awesome/picom.conf
 
 # Lock
 run xss-lock -- betterlockscreen -l -- -n
