@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if pgrep alacritty ; then
-	alacritty msg create-window "$@"
+	~/.cargo/bin/alacritty msg create-window "$@"
 else
-	alacritty "$@"
+	~/.cargo/bin/alacritty "$@"
 fi
