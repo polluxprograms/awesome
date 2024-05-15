@@ -101,22 +101,11 @@ awful.screen.connect_for_each_screen(function(s)
     awful.button({ }, 3, function () awful.layout.inc(-1) end)
   ))
 
-  -- Hidden wibar
   s.wibar = awful.wibar({
     position = 'top',
     screen = s,
-    width = beautiful.bar_height,
     height = beautiful.bar_height,
-    widget = wibox.widget({})
-  })
-  s.wibar.x = s.geometry.x
-
-  s.wibox_left = awful.popup({
-    screen = s,
-    placement = awful.placement.top_left,
-    minimum_height = beautiful.bar_height,
-    maximum_height = beautiful.bar_height,
-    bg = '#0000',
+    bg = "#0000",
     widget = wibox.widget({
       {
         s.myclock,
@@ -126,21 +115,7 @@ awful.screen.connect_for_each_screen(function(s)
         layout = wibox.layout.fixed.horizontal,
         spacing = 8
       },
-      shape = function (cr, width, height)
-        return gears.shape.partially_rounded_rect(cr, width, height, false, false, true, false, 8)
-      end,
-      widget = wibox.container.background(),
-      bg = beautiful.bg_normal
-    })
-  })
-
-  s.wibox_right = awful.popup({
-    screen = s,
-    placement = awful.placement.top_right,
-    minimum_height = beautiful.bar_height,
-    maximum_height = beautiful.bar_height,
-    bg = '#0000',
-    widget = wibox.widget({
+      nil,
       {
         mypomowidget,
         myplayerwidget,
@@ -148,14 +123,9 @@ awful.screen.connect_for_each_screen(function(s)
         layout = wibox.layout.fixed.horizontal,
         spacing = 8
       },
-      shape = function (cr, width, height)
-        return gears.shape.partially_rounded_rect(cr, width, height, false, false, false, true, 8)
-      end,
-      widget = wibox.container.background(),
-      bg = beautiful.bg_normal
-    })
+      layout = wibox.layout.align.horizontal
+   })
   })
-
 end)
 
 if not awetags.restore() then
@@ -164,11 +134,24 @@ if not awetags.restore() then
 end
 
 awful.rules.add_rule_source('default', function(_, properties)
-  properties.border_width = beautiful.border_width
-  properties.border_color = beautiful.border_normal
   properties.focus = awful.client.focus.filter
   properties.raise = true
   properties.screen = awful.screen.preferred
+  properties.titlebars_enabled = true
   properties.placement = awful.placement.no_overlap+awful.placement.no_offscreen
 end)
 
+local titlebar = require('pollux.titlebar')
+
+client.connect_signal("request::titlebars", function(c)
+  titlebar.add_titlebar(c):setup {
+    nil,
+    { -- Title
+        halign = "center",
+        widget = awful.titlebar.widget.titlewidget(c)
+    },
+    nil,
+    layout  = wibox.layout.align.horizontal,
+    expand = 'outside'
+  }
+end)
