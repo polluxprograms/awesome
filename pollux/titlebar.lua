@@ -1,12 +1,11 @@
 local wibox = require('wibox')
+local awful = require('awful')
 
 local titlebar_size = 24
 
-local titlebar = {}
-
 local all_titlebars = {}
 
-titlebar.add_titlebar = function(c)
+local add_titlebar = function(c)
   local drawable = c.titlebar_top(c, titlebar_size)
 
   local context = {
@@ -20,7 +19,6 @@ titlebar.add_titlebar = function(c)
 
     ret = wibox.drawable(drawable, context, 'pollux.titlebar')
     ret:_inform_visible(true)
-    ret:set_bg('#0000')
 
     ret.setup = wibox.widget.base.widget.setup
     ret.get_children_by_id = function (self, name)
@@ -32,20 +30,33 @@ titlebar.add_titlebar = function(c)
 
       return {}
     end
-    
-    c:connect_signal("request::unmanage", function()
-            ret:_inform_visible(false)
-    end)
 
+    -- Add an animation
+    all_titlebars[c] = {
+      drawable = ret,
+    }
   else
-    ret = all_titlebars[c]
+    ret = all_titlebars[c].drawable
   end
 
   return ret
 end
 
-client.connect_signal("request::unmanage", function(c)
-    all_titlebars[c] = nil
+-- Signals
+client.connect_signal("request::titlebars", function(c)
+  add_titlebar(c):setup {
+    nil,
+    { -- Title
+        halign = "center",
+        widget = awful.titlebar.widget.titlewidget(c)
+    },
+    nil,
+    layout  = wibox.layout.align.horizontal,
+    expand = 'outside'
+  }
 end)
 
-return titlebar
+client.connect_signal("request::unmanage", function(c)
+  all_titlebars[c].drawable:_inform_visible(false)
+  all_titlebars[c] = nil
+end)

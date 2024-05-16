@@ -10,28 +10,19 @@ local theme = {}
 
 theme.font          = "Monofur Nerd Font 14"
 
-theme.bg_normal     = "#222222"
-theme.bg_focus      = "#535d6c"
-theme.bg_urgent     = "#ff0000"
-theme.bg_minimize   = "#444444"
+theme.bg_normal     = "#00000000"
+theme.bg_focus      = "#00000000"
+theme.bg_urgent     = "#00000000"
+theme.bg_minimize   = "#00000000"
 theme.bg_systray    = theme.bg_normal
 
-theme.fg_normal     = "#aaaaaa"
+theme.fg_normal     = "#ffffff"
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
 theme.useless_gap   = 8
-theme.border_width  = 0
 theme.bar_height    = 32
-
-theme.border_unfocus  = "#000000"
-theme.border_focus = {
-  tag = "#0000ff",
-  client = "#00ff00",
-  layout = "#ff0000",
-  launcher = "#ffff00"
-}
 
 -- There are other variable sets
 -- overriding the default one when

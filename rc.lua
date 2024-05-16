@@ -10,10 +10,12 @@ AWESOME_DIR = HOME_DIR .. '.config/awesome/'
 THEMES_DIR = AWESOME_DIR .. 'themes/'
 beautiful.init(THEMES_DIR .. 'custom/theme.lua')
 
+require('awful.autofocus')
+
 require('pollux.errors')
 require('pollux.notifications')
-require('pollux.focus')
 require('pollux.floating')
+require('pollux.titlebar')
 
 local modalawesome = require('modalawesome')
 modalawesome.init{
@@ -25,6 +27,7 @@ modalawesome.init{
 }
 
 local awetags = require('pollux.awetags')
+local slick = require('slick')
 
 local mypomowidget = require('pollux.widgets.pomo')
 local myplayerwidget = require('pollux.widgets.playerctl')
@@ -65,7 +68,6 @@ end
 
 screen.connect_signal('property::geometry', set_wallpaper)
 
-
 awful.screen.connect_for_each_screen(function(s)
   set_wallpaper(s)
 
@@ -76,7 +78,8 @@ awful.screen.connect_for_each_screen(function(s)
     minute_width = 2,
     second_length = 12,
     second_width = 1,
-    forced_width = 32
+    forced_width = 32,
+    forced_height = 32
   })
 
   s.mypromptbox = awful.widget.prompt()
@@ -141,17 +144,7 @@ awful.rules.add_rule_source('default', function(_, properties)
   properties.placement = awful.placement.no_overlap+awful.placement.no_offscreen
 end)
 
-local titlebar = require('pollux.titlebar')
-
-client.connect_signal("request::titlebars", function(c)
-  titlebar.add_titlebar(c):setup {
-    nil,
-    { -- Title
-        halign = "center",
-        widget = awful.titlebar.widget.titlewidget(c)
-    },
-    nil,
-    layout  = wibox.layout.align.horizontal,
-    expand = 'outside'
-  }
+client.connect_signal('mouse::enter', function(c)
+  c:emit_signal('request::activate', 'mouse_enter', {raise = false})
 end)
+
