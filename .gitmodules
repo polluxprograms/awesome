@@ -1,3 +1,6 @@
 [submodule "modalawesome"]
 	path = modalawesome
 	url = https://github.com/polluxprograms/modalawesome.git
+[submodule "slick"]
+	path = slick
+	url = https://github.com/polluxprograms/slick.git
