@@ -7,15 +7,12 @@ local beautiful = require('beautiful')
 
 HOME_DIR = os.getenv('HOME') .. '/'
 AWESOME_DIR = HOME_DIR .. '.config/awesome/'
+WALLPAPER_DIR = HOME_DIR .. 'Wallpapers/'
 THEMES_DIR = AWESOME_DIR .. 'themes/'
+
 beautiful.init(THEMES_DIR .. 'custom/theme.lua')
 
 require('awful.autofocus')
-
-require('pollux.errors')
-require('pollux.notifications')
-require('pollux.floating')
-require('pollux.titlebar')
 
 local modalawesome = require('modalawesome')
 modalawesome.init{
@@ -27,7 +24,11 @@ modalawesome.init{
 }
 
 local awetags = require('pollux.awetags')
-local slick = require('slick')
+
+require('pollux.errors')
+require('pollux.notifications')
+require('pollux.floating')
+require('pollux.titlebar')
 
 local mypomowidget = require('pollux.widgets.pomo')
 local myplayerwidget = require('pollux.widgets.playerctl')
@@ -37,39 +38,17 @@ local clock = require('pollux.widgets.clock')
 
 awful.spawn.with_shell('~/.config/awesome/autostart.sh')
 
-modkey = 'Mod4'
-
 awful.layout.layouts = {
   awful.layout.suit.tile,
   awful.layout.suit.floating,
   awful.layout.suit.max.fullscreen,
 }
 
-mytextclock = wibox.widget.textclock()
-
-local taglist_buttons = gears.table.join(
-  awful.button({ }, 1, function(t) t:view_only() end),
-  awful.button({ modkey }, 1, function(t)
-    if client.focus then
-      client.focus:move_to_tag(t)
-    end
-  end)
-)
-
-local function set_wallpaper(s)
-  if beautiful.wallpaper then
-    local wallpaper = beautiful.wallpaper
-    if type(wallpaper) == 'function' then
-      wallpaper = wallpaper(s)
-    end
-    gears.wallpaper.maximized(wallpaper, s, false)
-  end
-end
-
-screen.connect_signal('property::geometry', set_wallpaper)
+screen.connect_signal('property::geometry', function (s)
+    gears.wallpaper.maximized(WALLPAPER_DIR .. beautiful.wallpaper, s, false)
+end)
 
 awful.screen.connect_for_each_screen(function(s)
-  set_wallpaper(s)
 
   s.myclock = clock({
     hour_length = 6,
