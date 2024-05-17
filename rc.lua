@@ -44,11 +44,16 @@ awful.layout.layouts = {
   awful.layout.suit.max.fullscreen,
 }
 
+set_wallpaper = function (s)
+  gears.wallpaper.maximized(WALLPAPER_DIR .. beautiful.wallpaper, s, false)
+end
+
 screen.connect_signal('property::geometry', function (s)
-    gears.wallpaper.maximized(WALLPAPER_DIR .. beautiful.wallpaper, s, false)
+  set_wallpaper(s)
 end)
 
 awful.screen.connect_for_each_screen(function(s)
+  set_wallpaper(s)
 
   s.myclock = clock({
     hour_length = 6,

@@ -21,6 +21,14 @@ theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
+theme.titlebar_normal = '#00000000'
+theme.titlebar_focus = {
+  tag = '#0000ff40',
+  client = '#00ff0040',
+  launcher = '#ffff0040',
+  layout = '#ff000040'
+}
+
 theme.useless_gap   = 8
 theme.bar_height    = 32
 
