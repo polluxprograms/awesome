@@ -8,8 +8,6 @@ local color = require('pollux.color')
 local titlebar_size = 24
 local focus_color = beautiful.titlebar_focus['tag']
 
-local all_titlebars = {}
-
 local stop_anim = function(value, target)
   return (
     (value.r - target.r) ^ 2 +
@@ -27,9 +25,9 @@ local add_titlebar = function(c)
     position = 'top'
   }
 
-  local ret
+  local ret = c.titlebar or nil
 
-  if not all_titlebars[c] then
+  if not ret then
 
     ret = wibox.drawable(drawable, context, 'pollux.titlebar')
 
@@ -46,28 +44,24 @@ local add_titlebar = function(c)
       return {}
     end
 
-    -- Add an animation
-    all_titlebars[c] = {
-      drawable = ret,
-      animation = slick(
-        color.new(beautiful.titlebar_normal),
-        {
-          callback = function (value)
-            ret:set_bg(color.to_pattern(value))
-          end,
-          stop = stop_anim
-        }
-      )
-    }
-  else
-    ret = all_titlebars[c].drawable
+    local anim = slick(
+      color.new(beautiful.titlebar_normal),
+      {
+        callback = function (value)
+          ret:set_bg(color.to_pattern(value))
+        end,
+        stop = stop_anim
+      }
+    )
+
+    ret.set_col = function(col)
+      anim:set(color.new(col))
+    end
+
+    c.titlebar = ret
   end
 
   return ret
-end
-
-local set_titlebar_color = function(c, col)
-  all_titlebars[c].animation:set(color.new(col))
 end
 
 -- Signals
@@ -87,19 +81,18 @@ end)
 awesome.connect_signal('mode::changed', function(mode)
   focus_color = beautiful.titlebar_focus[mode] or beautiful.titlebar_normal
   if client.focus then
-    set_titlebar_color(client.focus, focus_color)
+    client.focus.titlebar.set_col(focus_color)
   end
 end)
 
 client.connect_signal("focus", function (c)
-  set_titlebar_color(c, focus_color)
+  c.titlebar.set_col(focus_color)
 end)
 
 client.connect_signal("unfocus", function (c)
-  set_titlebar_color(c, beautiful.titlebar_normal)
+  c.titlebar.set_col(beautiful.titlebar_normal)
 end)
 
 client.connect_signal("request::unmanage", function(c)
-  all_titlebars[c].drawable:_inform_visible(false)
-  all_titlebars[c] = nil
+  c.titlebar:_inform_visible(false)
 end)
