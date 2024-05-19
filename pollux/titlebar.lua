@@ -6,7 +6,6 @@ local beautiful = require('beautiful')
 local color = require('pollux.color')
 
 local titlebar_size = 24
-local focus_color = beautiful.titlebar_focus['tag']
 
 local stop_anim = function(value, target)
   return (
@@ -68,7 +67,7 @@ end
 client.connect_signal("request::titlebars", function(c)
   add_titlebar(c):setup {
     nil,
-    { -- Title
+    {
         halign = "center",
         widget = awful.titlebar.widget.titlewidget(c)
     },
@@ -76,21 +75,6 @@ client.connect_signal("request::titlebars", function(c)
     layout  = wibox.layout.align.horizontal,
     expand = 'outside'
   }
-end)
-
-awesome.connect_signal('mode::changed', function(mode)
-  focus_color = beautiful.titlebar_focus[mode] or beautiful.titlebar_normal
-  if client.focus then
-    client.focus.titlebar.set_col(focus_color)
-  end
-end)
-
-client.connect_signal("focus", function (c)
-  c.titlebar.set_col(focus_color)
-end)
-
-client.connect_signal("unfocus", function (c)
-  c.titlebar.set_col(beautiful.titlebar_normal)
 end)
 
 client.connect_signal("request::unmanage", function(c)

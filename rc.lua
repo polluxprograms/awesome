@@ -2,7 +2,6 @@ pcall(require, 'luarocks.loader')
 
 local gears = require('gears')
 local awful = require('awful')
-local wibox = require('wibox')
 local beautiful = require('beautiful')
 
 HOME_DIR = os.getenv('HOME') .. '/'
@@ -11,8 +10,6 @@ WALLPAPER_DIR = HOME_DIR .. 'Wallpapers/'
 THEMES_DIR = AWESOME_DIR .. 'themes/'
 
 beautiful.init(THEMES_DIR .. 'custom/theme.lua')
-
-require('awful.autofocus')
 
 local modalawesome = require('modalawesome')
 modalawesome.init{
@@ -25,26 +22,21 @@ modalawesome.init{
 
 local awetags = require('pollux.awetags')
 
+if not awetags.restore() then
+  gears.timer.delayed_call(function()
+    local default_tag = awetags.create_tag('default', screen.primary)
+    default_tag.selected = true
+  end)
+end
+
 require('pollux.errors')
 require('pollux.notifications')
+require('pollux.wibar')
 require('pollux.floating')
 require('pollux.titlebar')
+require('pollux.focus')
 
-local mypomowidget = require('pollux.widgets.pomo')
-local myplayerwidget = require('pollux.widgets.playerctl')
-local myselector = require('pollux.widgets.selector')
-local mymodewidget = modalawesome.active_mode
-local clock = require('pollux.widgets.clock')
-
-awful.spawn.with_shell('~/.config/awesome/autostart.sh')
-
-awful.layout.layouts = {
-  awful.layout.suit.tile,
-  awful.layout.suit.floating,
-  awful.layout.suit.max.fullscreen,
-}
-
-set_wallpaper = function (s)
+local set_wallpaper = function (s)
   gears.wallpaper.maximized(WALLPAPER_DIR .. beautiful.wallpaper, s, false)
 end
 
@@ -54,71 +46,13 @@ end)
 
 awful.screen.connect_for_each_screen(function(s)
   set_wallpaper(s)
-
-  s.myclock = clock({
-    hour_length = 6,
-    hour_width = 2,
-    minute_length = 12,
-    minute_width = 2,
-    second_length = 12,
-    second_width = 1,
-    forced_width = 32,
-    forced_height = 32
-  })
-
-  s.mypromptbox = awful.widget.prompt()
-
-  s.mytag = wibox.widget({
-    text = '',
-    widget = wibox.widget.textbox
-  })
-
-
-  s:connect_signal('tag::changed', function ()
-    if s.selected_tag then
-      s.mytag.text = s.selected_tag.name
-    else
-      s.mytag.text = 'none'
-    end
-  end)
-
-  s.mylayoutbox = awful.widget.layoutbox(s)
-  s.mylayoutbox:buttons(gears.table.join(
-    awful.button({ }, 1, function () awful.layout.inc( 1) end),
-    awful.button({ }, 3, function () awful.layout.inc(-1) end)
-  ))
-
-  s.wibar = awful.wibar({
-    position = 'top',
-    screen = s,
-    height = beautiful.bar_height,
-    bg = "#0000",
-    widget = wibox.widget({
-      {
-        s.myclock,
-        mymodewidget,
-        s.mytag,
-        myselector,
-        layout = wibox.layout.fixed.horizontal,
-        spacing = 8
-      },
-      nil,
-      {
-        mypomowidget,
-        myplayerwidget,
-        s.mylayoutbox,
-        layout = wibox.layout.fixed.horizontal,
-        spacing = 8
-      },
-      layout = wibox.layout.align.horizontal
-   })
-  })
 end)
 
-if not awetags.restore() then
-  local default_tag = awetags.create_tag('default', screen.primary)
-  default_tag.selected = true
-end
+awful.layout.layouts = {
+  awful.layout.suit.tile,
+  awful.layout.suit.floating,
+  awful.layout.suit.max.fullscreen,
+}
 
 awful.rules.add_rule_source('default', function(_, properties)
   properties.focus = awful.client.focus.filter
@@ -128,7 +62,4 @@ awful.rules.add_rule_source('default', function(_, properties)
   properties.placement = awful.placement.no_overlap+awful.placement.no_offscreen
 end)
 
-client.connect_signal('mouse::enter', function(c)
-  c:emit_signal('request::activate', 'mouse_enter', {raise = false})
-end)
-
+awful.spawn.with_shell('~/.config/awesome/autostart.sh')
