@@ -24,7 +24,7 @@ local launcher_commands = {
   {
     description = 'open a terminal',
     pattern = {'t'},
-    handler = function() awful.spawn('/home/pollux/.config/awesome/open_terminal.sh') end
+    handler = function() awful.spawn('kitty -1') end
   },
   {
     description = 'open a browser',
