@@ -27,10 +27,28 @@ if not awetags.restore() then
     local default_tag = awetags.create_tag('default', screen.primary)
     default_tag.selected = true
   end)
+else
+  gears.timer.delayed_call(function()
+    screen.primary:emit_signal('tag::changed')
+  end)
 end
 
+local naughtier = require('naughtier')
+naughtier.setup({
+  filters = {
+    -- Enable dnd
+    naughtier.default.dnd,
+    -- Don't log MPD notifications
+    function (notification)
+      if notification.freedesktop_hints and notification.freedesktop_hints['desktop-entry'] == 'mpdris2' then
+        notification.log = false
+      end
+      return notification
+    end
+  }
+})
+
 require('pollux.errors')
-require('pollux.notifications')
 require('pollux.wibar')
 require('pollux.floating')
 require('pollux.titlebar')
