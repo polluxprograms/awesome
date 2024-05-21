@@ -4,3 +4,6 @@
 [submodule "slick"]
 	path = slick
 	url = https://github.com/polluxprograms/slick.git
+[submodule "naughtier"]
+	path = naughtier
+	url = https://github.com/polluxprograms/naughtier.git
